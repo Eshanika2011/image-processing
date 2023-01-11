@@ -30,6 +30,13 @@ def upload_image():
         file_data=oil_effect(decode_array_to_img)
     elif operation_selection=='rgb':
         file_data=rgb_effect(decode_array_to_img)
+    elif operation_selection=='water':
+        file_data=water_colour_effect(decode_array_to_img)
+    elif operation_selection=='invert':
+        file_data=invert_effect(decode_array_to_img)
+    elif operation_selection=='hdr':
+        file_data=HDR_effect(decode_array_to_img)
+
 
 
 
@@ -80,11 +87,21 @@ def rgb_effect(decode_array_img):
     status, output_image = cv2.imencode('.PNG',rgb_effect_img)
     return output_image
 
+def water_colour_effect(decode_array_img):
+    water_effect=cv2.stylization(decode_array_img,sigma_s=60,sigma_r=0.7)
+    status, output_image = cv2.imencode('.PNG',water_effect)
+    return output_image
 
+def invert_effect(decode_array_img):
+    invert_img=cv2.bitwise_not(decode_array_img)
+    status, output_image = cv2.imencode('.PNG',invert_img)
+    return output_image
 
-
-
-# Ends here
+def HDR_effect(decode_array_img):
+    HDR_effect_img=cv2.detailEnhance(decode_array_img,sigma_s=40,sigma_r=0.12)
+    status, output_image = cv2.imencode('.PNG',HDR_effect)
+    return output_image
+    # Ends here
 
 
 @app.route('/display/<filename>')
